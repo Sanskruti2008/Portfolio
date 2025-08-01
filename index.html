@@ -48,6 +48,7 @@
             line-height: 1.6;
             color: var(--text-primary);
             background: var(--bg-primary);
+            animation: pageTransition 1s ease;
             overflow-x: hidden;
             transition: all 0.3s ease;
         }
@@ -217,6 +218,17 @@
         
         [data-theme="dark"] .hero::after {
             background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+        }
+        
+        @keyframes pageTransition {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         @keyframes subtleFloat {
@@ -497,10 +509,11 @@
         }
         
         .btn-primary:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.02);
             box-shadow: 
-                0 8px 25px rgba(126, 87, 194, 0.3), 
+                0 8px 25px var(--accent-transparent-dark), 
                 inset 0 1px 0px rgba(255, 255, 255, 0.2);
+            filter: brightness(1.05);
         }
         
         .btn-primary:hover:after {
@@ -534,10 +547,10 @@
         }
         
         .btn-secondary:hover {
-            color: #7E57C2;
-            border-color: rgba(126, 87, 194, 0.6);
-            box-shadow: 0 4px 15px rgba(126, 87, 194, 0.15);
-            transform: translateY(-3px);
+            color: var(--accent);
+            border-color: var(--accent-transparent-dark);
+            box-shadow: 0 4px 15px var(--accent-transparent);
+            transform: translateY(-3px) scale(1.02);
             background: rgba(255, 255, 255, 0.9);
         }
         
@@ -1132,6 +1145,11 @@
             flex-direction: column;
             position: relative;
             border: 1px solid rgba(0,0,0,0.03);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(110, 104, 119, 0.2);
         }
         
         [data-theme="dark"] .project-card {
@@ -1735,6 +1753,123 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* New animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes tiltShake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        @keyframes slideFadeIn {
+            0% { 
+                opacity: 0;
+                transform: translateY(30px); 
+            }
+            100% { 
+                opacity: 1;
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes expandWidth {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes rotateIn {
+            0% { 
+                opacity: 0;
+                transform: perspective(500px) rotateY(-90deg); 
+            }
+            100% { 
+                opacity: 1;
+                transform: perspective(500px) rotateY(0); 
+            }
+        }
+        
+        @keyframes flipIn {
+            0% { 
+                opacity: 0;
+                transform: perspective(400px) rotateX(90deg);
+            }
+            100% { 
+                opacity: 1;
+                transform: perspective(400px) rotateX(0);
+            }
+        }
+        
+        @keyframes floatUpDown {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+        
+        @keyframes glowPulse {
+            0% { 
+                box-shadow: 0 0 5px rgba(110, 104, 119, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 20px rgba(110, 104, 119, 0.7); 
+            }
+            100% { 
+                box-shadow: 0 0 5px rgba(110, 104, 119, 0.3);
+            }
+        }
+        
+        .animated-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .animated-tilt {
+            animation: tiltShake 3s ease-in-out infinite;
+            transform-origin: center;
+        }
+        
+        .animated-slide-fade {
+            animation: slideFadeIn 1s forwards;
+            opacity: 0;
+        }
+        
+        .animated-rotate {
+            animation: rotateIn 1s forwards;
+            opacity: 0;
+        }
+        
+        .animated-flip {
+            animation: flipIn 1s forwards;
+            opacity: 0;
+        }
+        
+        .animated-float {
+            animation: floatUpDown 3s ease-in-out infinite;
+        }
+        
+        .animated-glow {
+            animation: glowPulse 3s infinite;
+        }
+        
+        /* Animation delays */
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; }
+        .delay-600 { animation-delay: 600ms; }
+        .delay-700 { animation-delay: 700ms; }
+        .delay-800 { animation-delay: 800ms; }
+        .delay-900 { animation-delay: 900ms; }
+        .delay-1000 { animation-delay: 1000ms; }
+        .delay-1500 { animation-delay: 1500ms; }
+        .delay-2000 { animation-delay: 2000ms; }
     </style>
 </head>
 <body>
@@ -1745,15 +1880,15 @@
 
     <!-- Header -->
     <header>
-        <div class="nav-container">
-            <div class="logo">SS</div>
+        <div class="nav-container animated-slide-fade">
+            <div class="logo animated-pulse">SS</div>
             <nav>
                 <ul>
-                    <li><a href="#" class="active">ABOUT</a></li>
-                    <li><a href="#skills">SKILLS</a></li>
-                    <li><a href="#projects">PROJECTS</a></li>
-                    <li><a href="#experience">EXPERIENCE</a></li>
-                    <li><a href="#contact">CONTACT</a></li>
+                    <li><a href="#" class="active animated-slide-fade delay-100">ABOUT</a></li>
+                    <li><a href="#skills" class="animated-slide-fade delay-200">SKILLS</a></li>
+                    <li><a href="#projects" class="animated-slide-fade delay-300">PROJECTS</a></li>
+                    <li><a href="#experience" class="animated-slide-fade delay-400">EXPERIENCE</a></li>
+                    <li><a href="#contact" class="animated-slide-fade delay-500">CONTACT</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
@@ -1767,10 +1902,10 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-watermark">SS</div>
-        <div class="hero-pattern"></div>
+        <div class="hero-watermark animated-pulse">SS</div>
+        <div class="hero-pattern animated-slide-fade"></div>
         
-        <a href="#about" class="scroll-indicator">
+        <a href="#about" class="scroll-indicator animated-float">
             <span>Explore</span>
             <div class="scroll-arrow">
                 <i class="fas fa-chevron-down"></i>
@@ -1779,21 +1914,21 @@
         
         <div class="hero-container">
             <div class="hero-content">
-                <span class="hero-greeting">Welcome to my portfolio</span>
-                <h1 class="hero-title" id="heroTitle"><span id="typed-text"></span><span class="cursor">|</span></h1>
-                <div class="accent-line"></div>
-                <p class="hero-subtitle">Computer Engineering Student & Aspiring Full-Stack Developer focused on creating elegant, user-centered digital experiences that blend innovation with functionality</p>
+                <span class="hero-greeting animated-slide-fade delay-100">Welcome to my portfolio</span>
+                <h1 class="hero-title animated-slide-fade delay-200" id="heroTitle"><span id="typed-text"></span><span class="cursor">|</span></h1>
+                <div class="accent-line animated-slide-fade delay-300"></div>
+                <p class="hero-subtitle animated-slide-fade delay-400">Computer Engineering Student & Aspiring Full-Stack Developer focused on creating elegant, user-centered digital experiences that blend innovation with functionality</p>
                 
-                <div class="hero-stats">
-                    <div class="stat">
+                <div class="hero-stats animated-slide-fade delay-600">
+                    <div class="stat animated-rotate delay-800">
                         <span class="stat-number">2+</span>
                         <span class="stat-label">Years Experience</span>
                     </div>
-                    <div class="stat">
+                    <div class="stat animated-rotate delay-900">
                         <span class="stat-number">5+</span>
                         <span class="stat-label">Technologies</span>
                     </div>
-                    <div class="stat">
+                    <div class="stat animated-rotate delay-1000">
                         <span class="stat-number">12+</span>
                         <span class="stat-label">Projects</span>
                     </div>
@@ -1807,29 +1942,29 @@
                     <a href="#contact" class="btn-secondary">Get In Touch</a>
                 </div>
                 
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn-primary">
+                <div class="hero-buttons animated-slide-fade delay-700">
+                    <a href="#projects" class="btn-primary animated-pulse">
                         <span class="btn-text">View Portfolio</span>
                         <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
                     </a>
-                    <a href="#contact" class="btn-secondary">
+                    <a href="#contact" class="btn-secondary animated-slide-fade delay-800">
                         <span>Contact Me</span>
                     </a>
                 </div>
             </div>
             
-            <div class="hero-image">
-                <div class="profile-card">
+            <div class="hero-image animated-flip delay-500">
+                <div class="profile-card animated-glow">
                     <div class="profile-card-inner">
-                        <div class="profile-img">
-                            <div class="profile-img-inner">
+                        <div class="profile-img animated-rotate delay-700">
+                            <div class="profile-img-inner animated-pulse">
                                 <span>SS</span>
                                 <div class="profile-img-shimmer"></div>
                             </div>
                         </div>
-                        <h3>Sanskruti Suryawanshi</h3>
-                        <p>Computer Engineering Student</p>
-                        <p>Government Polytechnic</p>
+                        <h3 class="animated-slide-fade delay-900">Sanskruti Suryawanshi</h3>
+                        <p class="animated-slide-fade delay-1000">Computer Engineering Student</p>
+                        <p class="animated-slide-fade delay-1100">Government Polytechnic</p>
                     </div>
                     <div class="profile-decoration"></div>
                 </div>
@@ -1907,61 +2042,61 @@
     <!-- Skills Section -->
     <section class="skills" id="skills">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header animated-slide-fade">
                 <h2 class="section-title">Skills & Technologies</h2>
                 <p class="section-subtitle">Technologies I work with and areas I'm exploring</p>
             </div>
             
             <div class="skills-grid fade-in">
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-html5"></i></div>
+                <div class="skill-card animated-rotate delay-100">
+                    <div class="skill-icon animated-tilt"><i class="fab fa-html5"></i></div>
                     <p>HTML5</p>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-css3-alt"></i></div>
+                <div class="skill-card animated-rotate delay-200">
+                    <div class="skill-icon animated-tilt"><i class="fab fa-css3-alt"></i></div>
                     <p>CSS3</p>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-js"></i></div>
+                <div class="skill-card animated-rotate delay-300">
+                    <div class="skill-icon animated-tilt"><i class="fab fa-js"></i></div>
                     <p>JavaScript</p>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-python"></i></div>
+                <div class="skill-card animated-rotate delay-400">
+                    <div class="skill-icon animated-tilt"><i class="fab fa-python"></i></div>
                     <p>Python</p>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-java"></i></div>
+                <div class="skill-card animated-rotate delay-500">
+                    <div class="skill-icon animated-tilt"><i class="fab fa-java"></i></div>
                     <p>Java</p>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-code"></i></div>
+                <div class="skill-card animated-rotate delay-600">
+                    <div class="skill-icon animated-tilt"><i class="fas fa-code"></i></div>
                     <p>C/C++</p>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-git-alt"></i></div>
+                <div class="skill-card animated-rotate delay-700">
+                    <div class="skill-icon animated-tilt"><i class="fab fa-git-alt"></i></div>
                     <p>Git</p>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-figma"></i></div>
+                <div class="skill-card animated-rotate delay-800">
+                    <div class="skill-icon animated-tilt"><i class="fab fa-figma"></i></div>
                     <p>Figma</p>
                 </div>
             </div>
             
             <div class="skill-categories fade-in">
-                <div class="skill-category">
-                    <h3><i class="fas fa-tools"></i> Tools & Platforms</h3>
+                <div class="skill-category animated-slide-fade delay-200">
+                    <h3 class="animated-pulse"><i class="fas fa-tools"></i> Tools & Platforms</h3>
                     <p>Git, VS Code, GitHub, Figma, Firebase, Adobe Suite</p>
                 </div>
-                <div class="skill-category">
-                    <h3><i class="fas fa-palette"></i> Design</h3>
+                <div class="skill-category animated-slide-fade delay-400">
+                    <h3 class="animated-pulse"><i class="fas fa-palette"></i> Design</h3>
                     <p>UI/UX Design, Canva, Figma, Adobe Creative Suite</p>
                 </div>
-                <div class="skill-category">
-                    <h3><i class="fas fa-search"></i> Exploring</h3>
+                <div class="skill-category animated-slide-fade delay-600">
+                    <h3 class="animated-pulse"><i class="fas fa-search"></i> Exploring</h3>
                     <p>Ethical Hacking, Network Security, Hardware Systems</p>
                 </div>
-                <div class="skill-category">
-                    <h3><i class="fas fa-users"></i> Soft Skills</h3>
+                <div class="skill-category animated-slide-fade delay-800">
+                    <h3 class="animated-pulse"><i class="fas fa-users"></i> Soft Skills</h3>
                     <p>Leadership, Public Speaking, Team Collaboration</p>
                 </div>
             </div>
@@ -2176,25 +2311,25 @@
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header animated-slide-fade">
                 <h2 class="section-title">Let's Connect</h2>
                 <p class="section-subtitle">Ready to collaborate? Let's discuss your next project</p>
             </div>
             
             <div class="contact-grid">
-                <div class="contact-form fade-in">
-                    <h3>Send me a message</h3>
+                <div class="contact-form fade-in animated-rotate">
+                    <h3 class="animated-slide-fade delay-200">Send me a message</h3>
                     <form id="contactForm">
-                        <div class="form-group">
+                        <div class="form-group animated-slide-fade delay-300">
                             <input type="text" id="name" placeholder="Your Name" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group animated-slide-fade delay-400">
                             <input type="email" id="email" placeholder="Your Email" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group animated-slide-fade delay-500">
                             <input type="text" id="subject" placeholder="Subject" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group animated-slide-fade delay-600">
                             <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
                         </div>
                         <button type="submit" class="btn-submit">
@@ -2260,12 +2395,17 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="animated-slide-fade">
         <div class="section-container">
-            <p>&copy; 2025 Sanskruti T. Suryawanshi</p>
-            <p> Always learning, always growing</p>
+            <p class="animated-slide-fade delay-100">&copy; 2025 Sanskruti T. Suryawanshi</p>
+            <p class="animated-slide-fade delay-200"> Always learning, always growing</p>
         </div>
     </footer>
+    
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="scroll-to-top animated-pulse" title="Scroll to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -2352,6 +2492,24 @@
             });
         });
 
+        // Scroll to Top Button
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
         // Intersection Observer for animations
         const observerOptions = {
             threshold: 0.1,
@@ -2852,5 +3010,38 @@
                 gap: 2rem;
             }
         }
-
+        
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-to-top:hover {
+            background: var(--accent-light);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
     </style>
