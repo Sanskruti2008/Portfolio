@@ -180,7 +180,7 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 7rem 3rem 3rem;
+            padding: 8rem 3rem 3rem;
             background: linear-gradient(135deg, #FAFAFA 0%, #F8F5FF 40%, #F0F0F0 100%);
             position: relative;
             overflow: hidden;
@@ -188,6 +188,63 @@
 
         [data-theme="dark"] .hero {
             background: linear-gradient(135deg, #212121 0%, #1E1A2A 40%, #141414 100%);
+        }
+        
+        /* Animation classes */
+        .animated-fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        .animated-slide-fade {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards;
+        }
+        
+        .animated-pulse {
+            animation: subtlePulse 3s ease-in-out infinite;
+        }
+        
+        .animated-rotate {
+            animation: subtleRotate 1s ease forwards;
+        }
+        
+        .animated-glow {
+            animation: subtleGlow 3s ease-in-out infinite;
+        }
+        
+        .animated-float {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        /* Animation delays */
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-550 { animation-delay: 0.55s; }
+        .delay-600 { animation-delay: 0.6s; }
+        .delay-650 { animation-delay: 0.65s; }
+        .delay-700 { animation-delay: 0.7s; }
+        .delay-800 { animation-delay: 0.8s; }
+        .delay-900 { animation-delay: 0.9s; }
+        .delay-1000 { animation-delay: 1s; }
+        
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        
+        @keyframes subtleRotate {
+            0% { opacity: 0; transform: rotate(-3deg) scale(0.95); }
+            100% { opacity: 1; transform: rotate(0) scale(1); }
+        }
+        
+        @keyframes subtleGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(126, 87, 194, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(126, 87, 194, 0.2); }
         }
 
         .hero-pattern {
@@ -1049,50 +1106,277 @@
         }
 
         /* Skills Section */
+        /* Skills Section */
+        .skills {
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skills-wrapper {
+            margin-top: 2rem;
+        }
+        
+        .skills-subheader {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin: 2rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .skills-subheader i {
+            margin-right: 0.75rem;
+            color: #7E57C2;
+            font-size: 1.3rem;
+        }
+        
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 2rem;
             margin-bottom: 4rem;
         }
 
         .skill-card {
             background: var(--bg-card);
-            padding: 2rem 1rem;
-            border-radius: 15px;
+            padding: 1.8rem 1.5rem;
+            border-radius: 12px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .skill-card::after {
+            content: 'Click for details';
+            position: absolute;
+            bottom: 0.5rem;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #7E57C2;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
         }
 
         .skill-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             box-shadow: var(--shadow-hover);
+        }
+        
+        .skill-card:hover::after {
+            opacity: 0.7;
+            transform: translateY(0);
+        }
+        
+        .skill-card:hover .skill-icon i {
+            transform: scale(1.15);
+            color: #7E57C2;
+        }
+        
+        .skill-card:hover .progress-fill {
+            width: 100% !important;
+            background: linear-gradient(to right, #7E57C2, #9575CD);
+        }
+        
+        .skill-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .skill-detail-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .skill-detail-content {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .skill-detail-modal.show .skill-detail-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: #7E57C2;
+            transform: rotate(90deg);
+        }
+        
+        .skill-detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .skill-detail-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            color: #7E57C2;
+        }
+        
+        .skill-detail-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        .skill-detail-progress {
+            margin: 1.5rem 0;
+        }
+        
+        .skill-detail-info {
+            margin-top: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .skill-features {
+            margin-top: 1.5rem;
+        }
+        
+        .skill-features-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+        
+        .skill-features-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .skill-features-list li i {
+            color: #7E57C2;
+            margin-right: 0.75rem;
         }
 
         .skill-icon {
-            font-size: 3rem;
+            font-size: 2.8rem;
             margin-bottom: 1rem;
             color: var(--primary);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .skill-icon i {
+            transition: all 0.4s ease;
+        }
+        
+        .skill-card p {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .skill-level {
+            margin-top: auto;
+        }
+        
+        .progress {
+            height: 5px;
+            background: rgba(126, 87, 194, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 0.75rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #7E57C2;
+            border-radius: 10px;
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .skill-categories {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         .skill-category {
             background: var(--bg-card);
             padding: 2rem;
-            border-radius: 15px;
+            border-radius: 12px;
             box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+        
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
         }
 
         .skill-category h3 {
             color: var(--primary);
             margin-bottom: 1rem;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            font-size: 1.15rem;
+        }
+        
+        .skill-category h3 i {
+            margin-right: 0.75rem;
+            color: #7E57C2;
+            font-size: 1.1rem;
+        }
+        
+        .skill-category p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.95rem;
         }
 
         /* Projects Section */
@@ -1104,6 +1388,68 @@
         
         [data-theme="dark"] .projects {
             background: #161616;
+        }
+        
+        .project-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(126, 87, 194, 0.2);
+            color: var(--text-secondary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(126, 87, 194, 0.1);
+            color: #7E57C2;
+            transform: translateY(-3px);
+        }
+        
+        .filter-btn.active {
+            background: #7E57C2;
+            color: white;
+            border-color: #7E57C2;
+            box-shadow: 0 4px 10px rgba(126, 87, 194, 0.2);
+        }
+        
+        [data-theme="dark"] .filter-btn {
+            border-color: rgba(149, 117, 205, 0.2);
+            color: #B8B8B8;
+        }
+        
+        [data-theme="dark"] .filter-btn:hover {
+            background: rgba(149, 117, 205, 0.1);
+            color: #9575CD;
+        }
+        
+        [data-theme="dark"] .filter-btn.active {
+            background: #9575CD;
+            color: #1A1A1A;
+            border-color: #9575CD;
+        }
+        
+        .project-card {
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        
+        .project-card.hide {
+            opacity: 0;
+            transform: scale(0.8);
+            position: absolute;
+            pointer-events: none;
         }
         
         .elegant-divider {
@@ -1919,27 +2265,19 @@
                 <div class="accent-line animated-slide-fade delay-300"></div>
                 <p class="hero-subtitle animated-slide-fade delay-400">Computer Engineering Student & Aspiring Full-Stack Developer focused on creating elegant, user-centered digital experiences that blend innovation with functionality</p>
                 
-                <div class="hero-stats animated-slide-fade delay-600">
-                    <div class="stat animated-rotate delay-800">
-                        <span class="stat-number">2+</span>
-                        <span class="stat-label">Years Experience</span>
+                <div class="hero-stats animated-slide-fade delay-500">
+                    <div class="stat">
+                        <span class="stat-number animated-fade-in delay-550">2+</span>
+                        <span class="stat-label animated-fade-in delay-600">Years Experience</span>
                     </div>
-                    <div class="stat animated-rotate delay-900">
-                        <span class="stat-number">5+</span>
-                        <span class="stat-label">Technologies</span>
+                    <div class="stat">
+                        <span class="stat-number animated-fade-in delay-600">5+</span>
+                        <span class="stat-label animated-fade-in delay-650">Technologies</span>
                     </div>
-                    <div class="stat animated-rotate delay-1000">
-                        <span class="stat-number">12+</span>
-                        <span class="stat-label">Projects</span>
+                    <div class="stat">
+                        <span class="stat-number animated-fade-in delay-650">12+</span>
+                        <span class="stat-label animated-fade-in delay-700">Projects</span>
                     </div>
-                </div>
-                
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn-primary">
-                        <span class="btn-text">View Projects</span>
-                        <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
-                    </a>
-                    <a href="#contact" class="btn-secondary">Get In Touch</a>
                 </div>
                 
                 <div class="hero-buttons animated-slide-fade delay-700">
@@ -1953,18 +2291,18 @@
                 </div>
             </div>
             
-            <div class="hero-image animated-flip delay-500">
+            <div class="hero-image animated-slide-fade delay-500">
                 <div class="profile-card animated-glow">
                     <div class="profile-card-inner">
-                        <div class="profile-img animated-rotate delay-700">
+                        <div class="profile-img animated-rotate delay-600">
                             <div class="profile-img-inner animated-pulse">
                                 <span>SS</span>
                                 <div class="profile-img-shimmer"></div>
                             </div>
                         </div>
-                        <h3 class="animated-slide-fade delay-900">Sanskruti Suryawanshi</h3>
-                        <p class="animated-slide-fade delay-1000">Computer Engineering Student</p>
-                        <p class="animated-slide-fade delay-1100">Government Polytechnic</p>
+                        <h3 class="animated-slide-fade delay-700">Sanskruti Suryawanshi</h3>
+                        <p class="animated-slide-fade delay-800">Computer Engineering Student</p>
+                        <p class="animated-slide-fade delay-900">Government Polytechnic</p>
                     </div>
                     <div class="profile-decoration"></div>
                 </div>
@@ -2042,62 +2380,112 @@
     <!-- Skills Section -->
     <section class="skills" id="skills">
         <div class="section-container">
-            <div class="section-header animated-slide-fade">
+            <div class="section-header" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
                 <h2 class="section-title">Skills & Technologies</h2>
                 <p class="section-subtitle">Technologies I work with and areas I'm exploring</p>
             </div>
             
-            <div class="skills-grid fade-in">
-                <div class="skill-card animated-rotate delay-100">
-                    <div class="skill-icon animated-tilt"><i class="fab fa-html5"></i></div>
-                    <p>HTML5</p>
+            <div class="skills-wrapper">
+                <h3 class="skills-subheader" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
+                    <i class="fas fa-code"></i> Technical Skills
+                </h3>
+                
+                <div class="skills-grid" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-html5"></i></div>
+                        <p>HTML5</p>
+                        <div class="skill-level">
+                            <div class="progress">
+                                <div class="progress-fill" style="width: 92%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-css3-alt"></i></div>
+                        <p>CSS3</p>
+                        <div class="skill-level">
+                            <div class="progress">
+                                <div class="progress-fill" style="width: 88%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-js"></i></div>
+                        <p>JavaScript</p>
+                        <div class="skill-level">
+                            <div class="progress">
+                                <div class="progress-fill" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-python"></i></div>
+                        <p>Python</p>
+                        <div class="skill-level">
+                            <div class="progress">
+                                <div class="progress-fill" style="width: 78%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-java"></i></div>
+                        <p>Java</p>
+                        <div class="skill-level">
+                            <div class="progress">
+                                <div class="progress-fill" style="width: 75%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fas fa-code"></i></div>
+                        <p>C/C++</p>
+                        <div class="skill-level">
+                            <div class="progress">
+                                <div class="progress-fill" style="width: 70%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-git-alt"></i></div>
+                        <p>Git</p>
+                        <div class="skill-level">
+                            <div class="progress">
+                                <div class="progress-fill" style="width: 82%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-figma"></i></div>
+                        <p>Figma</p>
+                        <div class="skill-level">
+                            <div class="progress">
+                                <div class="progress-fill" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="skill-card animated-rotate delay-200">
-                    <div class="skill-icon animated-tilt"><i class="fab fa-css3-alt"></i></div>
-                    <p>CSS3</p>
-                </div>
-                <div class="skill-card animated-rotate delay-300">
-                    <div class="skill-icon animated-tilt"><i class="fab fa-js"></i></div>
-                    <p>JavaScript</p>
-                </div>
-                <div class="skill-card animated-rotate delay-400">
-                    <div class="skill-icon animated-tilt"><i class="fab fa-python"></i></div>
-                    <p>Python</p>
-                </div>
-                <div class="skill-card animated-rotate delay-500">
-                    <div class="skill-icon animated-tilt"><i class="fab fa-java"></i></div>
-                    <p>Java</p>
-                </div>
-                <div class="skill-card animated-rotate delay-600">
-                    <div class="skill-icon animated-tilt"><i class="fas fa-code"></i></div>
-                    <p>C/C++</p>
-                </div>
-                <div class="skill-card animated-rotate delay-700">
-                    <div class="skill-icon animated-tilt"><i class="fab fa-git-alt"></i></div>
-                    <p>Git</p>
-                </div>
-                <div class="skill-card animated-rotate delay-800">
-                    <div class="skill-icon animated-tilt"><i class="fab fa-figma"></i></div>
-                    <p>Figma</p>
-                </div>
-            </div>
-            
-            <div class="skill-categories fade-in">
-                <div class="skill-category animated-slide-fade delay-200">
-                    <h3 class="animated-pulse"><i class="fas fa-tools"></i> Tools & Platforms</h3>
-                    <p>Git, VS Code, GitHub, Figma, Firebase, Adobe Suite</p>
-                </div>
-                <div class="skill-category animated-slide-fade delay-400">
-                    <h3 class="animated-pulse"><i class="fas fa-palette"></i> Design</h3>
-                    <p>UI/UX Design, Canva, Figma, Adobe Creative Suite</p>
-                </div>
-                <div class="skill-category animated-slide-fade delay-600">
-                    <h3 class="animated-pulse"><i class="fas fa-search"></i> Exploring</h3>
-                    <p>Ethical Hacking, Network Security, Hardware Systems</p>
-                </div>
-                <div class="skill-category animated-slide-fade delay-800">
-                    <h3 class="animated-pulse"><i class="fas fa-users"></i> Soft Skills</h3>
-                    <p>Leadership, Public Speaking, Team Collaboration</p>
+                
+                <h3 class="skills-subheader" data-aos="fade-up" data-aos-duration="800" data-aos-once="true" data-aos-delay="100">
+                    <i class="fas fa-lightbulb"></i> Areas of Expertise
+                </h3>
+                
+                <div class="skill-categories" data-aos="fade-up" data-aos-duration="800" data-aos-once="true" data-aos-delay="200">
+                    <div class="skill-category">
+                        <h3><i class="fas fa-tools"></i> Tools & Platforms</h3>
+                        <p>Git, VS Code, GitHub, Figma, Firebase, Adobe Suite</p>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-palette"></i> Design</h3>
+                        <p>UI/UX Design, Canva, Figma, Adobe Creative Suite</p>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-search"></i> Exploring</h3>
+                        <p>Ethical Hacking, Network Security, Hardware Systems</p>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-users"></i> Soft Skills</h3>
+                        <p>Leadership, Public Speaking, Team Collaboration</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2112,9 +2500,17 @@
                 <div class="elegant-divider"></div>
             </div>
             
+            <div class="project-filters" data-aos="fade-up" data-aos-duration="600" data-aos-once="true">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="web">Web Dev</button>
+                <button class="filter-btn" data-filter="ai">AI/ML</button>
+                <button class="filter-btn" data-filter="design">UI/UX</button>
+                <button class="filter-btn" data-filter="mobile">Mobile</button>
+            </div>
+            
             <div class="projects-grid" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
                 <!-- Project Card 1 -->
-                <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-once="true" data-aos-delay="100">
+                <div class="project-card" data-category="ai web" data-aos="fade-up" data-aos-duration="800" data-aos-once="true" data-aos-delay="100">
                     <div class="project-image">
                         <div class="project-overlay"></div>
                         <img src="https://images.unsplash.com/photo-1573164574397-dd250bc8a598?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="College Chatbot Project">
@@ -2150,7 +2546,7 @@
                 </div>
                 
                 <!-- Project Card 2 -->
-                <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-once="true" data-aos-delay="200">
+                <div class="project-card" data-category="web design" data-aos="fade-up" data-aos-duration="800" data-aos-once="true" data-aos-delay="200">
                     <div class="project-image">
                         <div class="project-overlay"></div>
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="E-Learning Platform Project">
@@ -2185,7 +2581,7 @@
                 </div>
                 
                 <!-- Project Card 3 -->
-                <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-once="true" data-aos-delay="300">
+                <div class="project-card" data-category="web design" data-aos="fade-up" data-aos-duration="800" data-aos-once="true" data-aos-delay="300">
                     <div class="project-image">
                         <div class="project-overlay"></div>
                         <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Portfolio Website Project">
@@ -2209,6 +2605,41 @@
                             <div class="project-features">
                                 <span class="detail-label">Key Features</span>
                                 <span class="detail-value">Responsive design, Dark mode, Optimized performance</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="project-cta">
+                            <span>View Project</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Project Card 4 -->
+                <div class="project-card" data-category="mobile app" data-aos="fade-up" data-aos-duration="800" data-aos-once="true" data-aos-delay="400">
+                    <div class="project-image">
+                        <div class="project-overlay"></div>
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fitness Tracker App">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Fitness Tracker App</h3>
+                        <p class="project-description">A mobile application that helps users track their fitness activities, set goals, and monitor progress. Features include workout recommendations and health metrics visualization.</p>
+                        
+                        <div class="project-tech">
+                            <span class="tech-tag">Flutter</span>
+                            <span class="tech-tag">Dart</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">UI/UX</span>
+                        </div>
+                        
+                        <div class="project-details">
+                            <div class="project-role">
+                                <span class="detail-label">Role</span>
+                                <span class="detail-value">Mobile Developer</span>
+                            </div>
+                            <div class="project-features">
+                                <span class="detail-label">Key Features</span>
+                                <span class="detail-value">Offline storage, Activity tracking, Data visualization</span>
                             </div>
                         </div>
                         
@@ -2406,6 +2837,32 @@
     <button id="scrollToTop" class="scroll-to-top animated-pulse" title="Scroll to Top">
         <i class="fas fa-arrow-up"></i>
     </button>
+    
+    <!-- Skill Detail Modal -->
+    <div class="skill-detail-modal" id="skillModal">
+        <div class="skill-detail-content">
+            <button class="close-modal" id="closeSkillModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="skill-detail-header">
+                <div class="skill-detail-icon">
+                    <i id="skillModalIcon"></i>
+                </div>
+                <h2 class="skill-detail-title" id="skillModalTitle"></h2>
+            </div>
+            <div class="skill-detail-progress">
+                <p>Proficiency</p>
+                <div class="progress">
+                    <div class="progress-fill" id="skillModalProgress"></div>
+                </div>
+            </div>
+            <div class="skill-detail-info" id="skillModalInfo"></div>
+            <div class="skill-features">
+                <h3>What I've done with this skill</h3>
+                <ul class="skill-features-list" id="skillModalFeatures"></ul>
+            </div>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -2510,6 +2967,44 @@
             });
         });
         
+        // Project Filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                const filterValue = btn.getAttribute('data-filter');
+                
+                projectCards.forEach(card => {
+                    // Show all if filter is "all"
+                    if (filterValue === 'all') {
+                        card.classList.remove('hide');
+                        setTimeout(() => {
+                            card.style.display = 'block';
+                        }, 300);
+                    } else {
+                        // Check if card has the category
+                        if (card.getAttribute('data-category').includes(filterValue)) {
+                            card.classList.remove('hide');
+                            setTimeout(() => {
+                                card.style.display = 'block';
+                            }, 300);
+                        } else {
+                            card.classList.add('hide');
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    }
+                });
+            });
+        });
+        
         // Intersection Observer for animations
         const observerOptions = {
             threshold: 0.1,
@@ -2561,38 +3056,227 @@
         });
 
         // Typing animation for hero title using Typed.js
-        setTimeout(() => {
-            const typedTextElement = document.getElementById('typed-text');
-            const cursor = document.querySelector('.cursor');
-            
-            if (typedTextElement) {
-                // Show cursor for typing effect
-                cursor.style.opacity = "1";
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const typedTextElement = document.getElementById('typed-text');
+                const cursor = document.querySelector('.cursor');
                 
-                // Initialize Typed.js
-                const typed = new Typed('#typed-text', {
-                    strings: ["Hi, I'm <span class='accent-text'>Sanskruti</span>"],
-                    typeSpeed: 70, // Speed of typing
-                    startDelay: 1000, // Delay before typing starts
-                    showCursor: false, // Hide the default cursor as we have our own
-                    loop: false, // Don't loop the animation
-                    onComplete: function() {
-                        // Keep the cursor blinking after typing is complete
-                        cursor.style.animation = "cursorBlink 1.2s infinite";
-                    }
-                });
-            }
-        }, 500);
+                if (typedTextElement) {
+                    // Show cursor for typing effect
+                    cursor.style.opacity = "1";
+                    
+                    // Initialize Typed.js
+                    const typed = new Typed('#typed-text', {
+                        strings: ["Hi, I'm <span class='accent-text'>Sanskruti</span>"],
+                        typeSpeed: 70, // Speed of typing
+                        startDelay: 800, // Delay before typing starts
+                        showCursor: false, // Hide the default cursor as we have our own
+                        loop: false, // Don't loop the animation
+                        onComplete: function() {
+                            // Keep the cursor blinking after typing is complete
+                            cursor.style.animation = "cursorBlink 1.2s infinite";
+                        }
+                    });
+                }
+            }, 500);
+            
+            // Initialize skill progress bars
+            animateProgressBars();
+            
+            // Initialize interactive skill cards
+            initSkillCards();
+        });
 
         // Skill progress bar animation
         function animateProgressBars() {
             const progressBars = document.querySelectorAll('.progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.getAttribute('data-percent');
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
+            const skillsSection = document.getElementById('skills');
+            let animated = false;
+            
+            // Check if element is in viewport
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.bottom >= 0
+                );
+            }
+            
+            // Animate progress bars when they come into view
+            function checkAndAnimate() {
+                if (isInViewport(skillsSection) && !animated) {
+                    animated = true;
+                    progressBars.forEach(bar => {
+                        // Get the original width from the style attribute
+                        const originalWidth = bar.style.width;
+                        // Set to 0 first
+                        bar.style.width = '0%';
+                        // Then animate to original width
+                        setTimeout(() => {
+                            bar.style.width = originalWidth;
+                        }, 300);
+                    });
+                }
+            }
+            
+            // Add scroll event listener
+            window.addEventListener('scroll', checkAndAnimate);
+            // Check on initial load
+            checkAndAnimate();
+        }
+        
+        // Initialize interactive skill cards
+        function initSkillCards() {
+            const skillCards = document.querySelectorAll('.skill-card');
+            const skillModal = document.getElementById('skillModal');
+            const closeModal = document.getElementById('closeSkillModal');
+            
+            // Skill details database
+            const skillDetails = {
+                'HTML5': {
+                    icon: 'fab fa-html5',
+                    progress: '92%',
+                    description: 'Proficient in creating semantic, accessible, and SEO-friendly HTML5 markup. Skilled in using modern HTML features and best practices.',
+                    features: [
+                        '<i class="fas fa-check"></i> Created responsive layouts using semantic HTML5',
+                        '<i class="fas fa-check"></i> Implemented accessibility features with ARIA attributes',
+                        '<i class="fas fa-check"></i> Used canvas for interactive graphics',
+                        '<i class="fas fa-check"></i> Built forms with client-side validation'
+                    ]
+                },
+                'CSS3': {
+                    icon: 'fab fa-css3-alt',
+                    progress: '88%',
+                    description: 'Strong knowledge of CSS3 features including flexbox, grid, animations, and responsive design techniques. Experienced with CSS preprocessors.',
+                    features: [
+                        '<i class="fas fa-check"></i> Built complex layouts with CSS Grid and Flexbox',
+                        '<i class="fas fa-check"></i> Created smooth animations and transitions',
+                        '<i class="fas fa-check"></i> Implemented responsive designs with media queries',
+                        '<i class="fas fa-check"></i> Used SCSS to organize and optimize stylesheets'
+                    ]
+                },
+                'JavaScript': {
+                    icon: 'fab fa-js',
+                    progress: '85%',
+                    description: 'Extensive experience with modern JavaScript (ES6+), DOM manipulation, and asynchronous programming. Familiar with popular frameworks and libraries.',
+                    features: [
+                        '<i class="fas fa-check"></i> Developed interactive UI components',
+                        '<i class="fas fa-check"></i> Worked with REST APIs using async/await',
+                        '<i class="fas fa-check"></i> Created custom animations and effects',
+                        '<i class="fas fa-check"></i> Built single-page applications'
+                    ]
+                },
+                'Python': {
+                    icon: 'fab fa-python',
+                    progress: '78%',
+                    description: 'Skilled in Python programming for web development, automation, and data analysis. Experience with frameworks like Flask and libraries like Pandas.',
+                    features: [
+                        '<i class="fas fa-check"></i> Built RESTful APIs with Flask',
+                        '<i class="fas fa-check"></i> Created data visualization projects',
+                        '<i class="fas fa-check"></i> Automated tasks with Python scripts',
+                        '<i class="fas fa-check"></i> Implemented machine learning models'
+                    ]
+                },
+                'Java': {
+                    icon: 'fab fa-java',
+                    progress: '75%',
+                    description: 'Strong foundation in Java programming with experience in object-oriented design patterns and application development.',
+                    features: [
+                        '<i class="fas fa-check"></i> Developed desktop applications',
+                        '<i class="fas fa-check"></i> Created backend services with Spring',
+                        '<i class="fas fa-check"></i> Built Android applications',
+                        '<i class="fas fa-check"></i> Implemented data structures and algorithms'
+                    ]
+                },
+                'C/C++': {
+                    icon: 'fas fa-code',
+                    progress: '70%',
+                    description: 'Solid understanding of C/C++ programming with experience in system programming, algorithms, and data structures.',
+                    features: [
+                        '<i class="fas fa-check"></i> Created embedded systems projects',
+                        '<i class="fas fa-check"></i> Optimized algorithms for performance',
+                        '<i class="fas fa-check"></i> Worked with memory management',
+                        '<i class="fas fa-check"></i> Developed console applications'
+                    ]
+                },
+                'Git': {
+                    icon: 'fab fa-git-alt',
+                    progress: '82%',
+                    description: 'Proficient in using Git for version control with experience in branching strategies, merging, and resolving conflicts.',
+                    features: [
+                        '<i class="fas fa-check"></i> Managed team collaborations with Git',
+                        '<i class="fas fa-check"></i> Used branching strategies for feature development',
+                        '<i class="fas fa-check"></i> Resolved merge conflicts',
+                        '<i class="fas fa-check"></i> Created CI/CD pipelines with Git hooks'
+                    ]
+                },
+                'Figma': {
+                    icon: 'fab fa-figma',
+                    progress: '80%',
+                    description: 'Experienced in using Figma for UI/UX design, prototyping, and collaboration with design teams.',
+                    features: [
+                        '<i class="fas fa-check"></i> Created wireframes and mockups',
+                        '<i class="fas fa-check"></i> Designed interactive prototypes',
+                        '<i class="fas fa-check"></i> Collaborated with design teams',
+                        '<i class="fas fa-check"></i> Implemented design systems'
+                    ]
+                }
+            };
+            
+            // Open modal when clicking on skill card
+            skillCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const skillName = card.querySelector('p').textContent;
+                    const skill = skillDetails[skillName] || {
+                        icon: card.querySelector('.skill-icon i').className,
+                        progress: card.querySelector('.progress-fill').style.width,
+                        description: 'Experienced in using ' + skillName + ' for various projects and applications.',
+                        features: [
+                            '<i class="fas fa-check"></i> Applied in multiple projects',
+                            '<i class="fas fa-check"></i> Continuously improving knowledge'
+                        ]
+                    };
+                    
+                    // Update modal content
+                    document.getElementById('skillModalIcon').className = skill.icon;
+                    document.getElementById('skillModalTitle').textContent = skillName;
+                    document.getElementById('skillModalProgress').style.width = skill.progress;
+                    document.getElementById('skillModalInfo').textContent = skill.description;
+                    
+                    const featuresList = document.getElementById('skillModalFeatures');
+                    featuresList.innerHTML = '';
+                    skill.features.forEach(feature => {
+                        const li = document.createElement('li');
+                        li.innerHTML = feature;
+                        featuresList.appendChild(li);
+                    });
+                    
+                    // Show modal with animation
+                    skillModal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', () => {
+                skillModal.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+            
+            // Close modal when clicking outside
+            skillModal.addEventListener('click', (e) => {
+                if (e.target === skillModal) {
+                    skillModal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Close modal with escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && skillModal.classList.contains('show')) {
+                    skillModal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
             });
         }
 
@@ -2940,6 +3624,44 @@
         }
         
         /* Mobile responsiveness improvements */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 8rem 1.5rem 3rem;
+            }
+            
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .hero-content {
+                order: 2;
+                text-align: center;
+            }
+            
+            .hero-image {
+                order: 1;
+            }
+            
+            .accent-line {
+                margin: 0 auto 2rem;
+            }
+            
+            .hero-stats {
+                margin: 2rem auto;
+                justify-content: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .hero-stats::before {
+                width: 80%;
+                left: 10%;
+            }
+        }
+        
         @media (max-width: 480px) {
             .hero-stats {
                 flex-direction: column;
@@ -2950,19 +3672,50 @@
                 display: flex;
                 align-items: center;
                 gap: 1rem;
+                padding: 0;
+            }
+            
+            .stat:not(:first-child)::before {
+                display: none;
             }
             
             .skills-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
             }
             
             .skill-categories {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .skills-subheader {
+                font-size: 1.3rem;
+                margin: 1.5rem 0;
+            }
+            
+            .skill-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .skill-icon {
+                font-size: 2.2rem;
+                height: 50px;
             }
             
             /* Projects mobile adjustments */
             .projects {
                 padding: 4rem 1rem;
+            }
+            
+            .project-filters {
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
             }
             
             .project-card {
@@ -3008,6 +3761,27 @@
             .projects-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 2rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .skill-categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Medium screens */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .skill-categories {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
         }
         
